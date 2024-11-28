@@ -36,8 +36,30 @@ from utils.torch_utils import ModelEMA, select_device, intersect_dicts, torch_di
 from utils.wandb_logging.wandb_utils import WandbLogger, check_wandb_resume
 
 logger = logging.getLogger(__name__)
+'''
+主要输入参数：
+--weights: str    # 初始权重文件路径，默认'yolov7.pt'
+--cfg: str        # 模型配置文件路径
+--data: str       # 数据配置文件路径，默认'data/coco.yaml'
+--hyp: str        # 超参数文件路径
+--epochs: int     # 训练轮数，默认300
+--batch-size: int # 批次大小，默认16
+--img-size: list  # 图像尺寸[训练尺寸,测试尺寸]，默认[640,640]
+--device: str     # 使用设备，如'0'表示第一个GPU
+'''
 
+'''
+输出参数：
+1. 模型文件：
+- last.pt      # 最后一轮的模型
+- best.pt      # 最佳性能的模型
 
+2. 训练日志：
+- results.txt  # 训练过程的指标记录
+
+3. 返回值：
+results: tuple # (P, R, mAP@.5, mAP@.5-.95, val_loss) 评估指标
+'''
 def train(hyp, opt, device, tb_writer=None):
     logger.info(colorstr('hyperparameters: ') + ', '.join(f'{k}={v}' for k, v in hyp.items()))
     save_dir, epochs, batch_size, total_batch_size, weights, rank, freeze = \

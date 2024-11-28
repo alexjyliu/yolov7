@@ -14,7 +14,30 @@ from utils.general import check_img_size, check_requirements, check_imshow, non_
 from utils.plots import plot_one_box
 from utils.torch_utils import select_device, load_classifier, time_synchronized, TracedModel
 
+'''
+主要输入参数：
+--weights: str    # 模型权重路径，默认'yolov7.pt'
+--source: str     # 输入源(图片/视频路径或摄像头ID)，默认'inference/images'
+--img-size: int   # 推理图像尺寸，默认640
+--conf-thres: float # 置信度阈值，默认0.25
+--iou-thres: float # NMS IOU阈值，默认0.45
+--device: str      # 使用设备
+'''
 
+'''
+输出参数：
+1. 可视化结果：
+- 检测后的图像/视频(带标注框)
+- 保存在 runs/detect/exp* 目录下
+
+2. 文本结果(如果指定--save-txt)：
+- 每个检测对象的类别和坐标信息
+- 保存在 runs/detect/exp*/labels/ 目录下
+
+3. 控制台输出：
+- 处理时间
+- 检测到的目标数量和类别
+'''
 def detect(save_img=False):
     source, weights, view_img, save_txt, imgsz, trace = opt.source, opt.weights, opt.view_img, opt.save_txt, opt.img_size, not opt.no_trace
     save_img = not opt.nosave and not source.endswith('.txt')  # save inference images
